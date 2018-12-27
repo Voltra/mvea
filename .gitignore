@@ -14,7 +14,7 @@ route_autoload.php
 
 ### Composer ###
 composer.phar
-/vendor/
+vendor/
 
 # Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
@@ -100,7 +100,7 @@ fabric.properties
 .idea/sonarlint
 
 ### Laravel ###
-/vendor/
+vendor/
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -116,7 +116,7 @@ storage/*.key
 .env
 Homestead.yaml
 Homestead.json
-/.vagrant
+.vagrant
 
 ### Node ###
 # Logs
