@@ -35,7 +35,7 @@ While **endpoints** represent the points of interaction in the user interface, i
 
 ### Model
 
-As in $MVC$ the **model** is responsible for providing, holding and accessing data. It is usually the component that deals with interfacing with the application's data source/database.
+As in ***MVC​*** the **model** is responsible for providing, holding and accessing data. It is usually the component that deals with interfacing with the application's data source/database.
 
 
 
