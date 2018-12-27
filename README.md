@@ -16,7 +16,7 @@ Need of a way to separate the use of data from its source, its manipulation as w
 
 ***MVEA*** is a derived form of [***MVC***](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller). It divides the application in four parts :
 
-* The **model** which is directly responsible with managing the application's data
+* The **model** which is directly responsible for managing the application's data
 * The **view** which is a representation of the **model** in a particular format
 * The **endpoint**(s) which is(are) the main interaction(s) with the end user, it is the set of available behavior
 * The **action** which manipulates and updates the **model**, it is the main logic behind all available behavior
@@ -55,7 +55,7 @@ Unless there is a binding between **model** and **view** (e.g. with modern web f
 
 ### Action
 
-**Actions** tend to be reused in other context (e.g. in middlewares), one more reason for separating them from **endpoints** : it makes more sense since we only want to borrow some behavior, not the entire **endpoint**'s logic.
+**Actions** tend to be reused in other contexts (e.g. in middlewares), one more reason for separating them from **endpoints** : it makes more sense since we only want to borrow some behavior, not the entire **endpoint**'s logic.
 
 They provide a given set of tools for a *specific* need (e.g. authentication, security, session management, etc...).
 
@@ -73,7 +73,7 @@ Let's use a fictitious programming language to demonstrate the use of ***MVEA***
 
 
 
-Actual full example will be provided as subdirectories that you are free to explore.
+Actual full examples will be provided as subdirectories that you are free to explore.
 
 
 
@@ -186,13 +186,13 @@ export class LoginEndpoint : Endpoint{
             inputs.forEach(input => input.on("enterPressed", bound));
         };
     
-        Models::User attemptLogin(string username, string password, string pconfirm){
+        void attemptLogin(string username, string password, string pconfirm){
             if($auth.isAlreadyLogged())
                 throw Errors::InvalidState("Attempt to log in while logged in");
             
             if(password != pconfirm){
                 $views.flash.push(error: "Passwords don't match");
-            	return null;
+            	return;
             }
             
             const pwd = $hash.hash(password);
@@ -201,13 +201,12 @@ export class LoginEndpoint : Endpoint{
                 $auth.setUser(user);
                 $views.flash.pushAfterSwap(success: "Successfully logged in");
                 $views.swapTo(class: HomeView);
-                return user;
-            }else{
-                $views.flash.push(error: "Invalid credentials");
-            	return null;
+                return;
             }
+            
+            $views.flash.push(error: "Invalid credentials");
         }
 };
 ```
 
-Here again, no implementation and just layout. Yet again fairly simple : once all the implementation details are abstracted away in the **actions** all we have left is error handling and "side-effects" on the **view(s)**.
+Here again, no implementation and just layout. Once all the implementation details are abstracted away in **actions** all we have left is error handling and "side effects" on the **view(s)**.
