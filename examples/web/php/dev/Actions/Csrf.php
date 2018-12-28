@@ -24,8 +24,8 @@ class Csrf extends Action{
 		$this->key = $config["key"];
 		$this->session = $this->container["session"];
 
-		$this->random = new Random($container);
-		$this->hash = new Hash($container);
+		$this->random = Random::from($container);
+		$this->hash = Hash::from($container);
 	}
 
 	public function sessionKey(): string{

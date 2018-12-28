@@ -36,9 +36,9 @@ class Auth extends Action{
 		$this->containerKey = $config["container"];
 		$this->session = $this->container["session"];
 
-		$this->hash = new Hash($container);
-		$this->cookies = new Cookies($container);
-		$this->random = new Random($container);
+		$this->hash = Hash::from($container);
+		$this->cookies = Cookies::from($container);
+		$this->random = Random::from($container);
 	}
 
 	/**

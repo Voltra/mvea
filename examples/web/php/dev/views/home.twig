@@ -1,1 +1,7 @@
-Hello {{ variable }}!
+{% extends layout() %}
+
+{% block title %} Hello world! {% endblock %}
+
+{% block body %}
+	Hello {{ variable }}!
+{% endblock %}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="shrink-to-fit=no,width=device-width,height=device-height"/>
+		<meta name="tags" content="{% block tags %}{% endblock %}"/>
+		<title>{% block title %}{% endblock %}</title>
+
+		{% block css %}{% endblock %}
+		{% block js %}{% endblock %}
+	</head>
+	<body>
+		{% include module("flash") %}
+		{% block body %}{% endblock %}
+	</body>
+</html>

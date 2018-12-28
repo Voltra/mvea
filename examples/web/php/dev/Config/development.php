@@ -6,6 +6,9 @@ return [
 		"displayErrorDetails" => true
 	],
 	"views" => [],
+	"csrf" => [
+		"key" => "csrf_token"
+	],
 	"random" => [
 		"length" => 128,
 		"alphabet" => null

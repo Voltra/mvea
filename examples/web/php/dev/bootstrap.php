@@ -17,6 +17,7 @@ $container = $app->getContainer();
 
 session_start();
 $container["session"] = require_once(Path::dev("/container/session.php"));
+$container["flash"] = require_once(Path::dev("/container/flash.php"));
 $container["view"] = require_once(Path::dev("/container/view.php"));
 
 $app->add(new \Slim\Middleware\Session($config["session"]))
