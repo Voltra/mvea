@@ -1,5 +1,7 @@
 <?php
 require_once "../vendor/autoload.php";
+
+use App\Path;
 use Slim\App as SlimApp;
 
 
@@ -11,11 +13,14 @@ $app = new SlimApp([
 	"config" => $config,
 	"settings" => $config["settings"]
 ]);
+$container = $app->getContainer();
 
-$app->add(new \Slim\Middleware\Session($config["session"]));
-$app->getContainer()["session"] = function($c){
-	return new \SlimSession\Helper();
-};
+$container["session"] = require_once(Path::dev("/container/session.php"));
+$container["view"] = require_once(Path::dev("/container/view.php"));
+
+$app->add(new \Slim\Middleware\Session($config["session"]))
+	->add(App\Middlewares\Csrf::from($container))
+	->add(App\Middlewares\Auth::from($container));
 
 require_once "route_autoload.php";
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Middlewares;
 
+use App\Exceptions\CsrfTokenMismatch;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Container;
@@ -18,10 +19,25 @@ class Csrf extends Middleware {
 	}
 
 	public function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface{
-		$token = $this->csrf->getToken();
+		$this->csrf->ensureHasToken();
 
-		if(in_array($rq->getMethod(), static::METHODS)){
-			$submittedToken = $rq->
+		if(!in_array($rq->getMethod(), static::METHODS)){
+			$key = $this->csrf->formKey();
+			$params = $rq->getParsedBody();
+			$submittedToken = isset($params[$key])
+			? $params[$this->csrf->formKey()]
+			: "";
+
+			if(!$this->csrf->isValid($submittedToken))
+				throw new CsrfTokenMismatch();
 		}
+
+		//TODO: put data in the view
+		$data = [
+			"csrf_key" => $key,
+			"csrf_token" => $this->csrf->getToken()
+		];
+
+		return $next($rq, $res);
 	}
 }

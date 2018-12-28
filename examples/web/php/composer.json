@@ -21,8 +21,8 @@
         "illuminate/pagination": "^5.5",
         "hassankhan/config": "^2.0",
         "vlucas/phpdotenv": "^2.5",
-        "ircmaxell/random-lib": "^1.2",
-        "dflydev/fig-cookies": "^1.0"
+        "dflydev/fig-cookies": "^1.0",
+        "paragonie/random-lib": "^2.0"
     },
     "autoload": {
         "psr-4": {

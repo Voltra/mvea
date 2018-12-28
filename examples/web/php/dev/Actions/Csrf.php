@@ -37,26 +37,29 @@ class Csrf extends Action{
 	}
 
 	public function hasToken(): bool{
-		return $this->session->exists($this->key);
+		return $this->session->exists($this->sessionKey());
 	}
 
 	public function getToken(): string{
-		if(!$this->hasToken())
-			$this->generateNewToken();
-
-		return $this->session->get($this->key);
+		$this->ensureHasToken();
+		return $this->session->get($this->sessionKey());
 	}
 
 	public function generateNewToken(): string{
 		$token = $this->hash->hash(
 			$this->random->generateString()
 		);
-		$this->session->set($this->key, $token);
+		$this->session->set($this->sessionKey(), $token);
 		return $token;
 	}
 
 	public function isValid(string $token): bool{
 		$actualToken = $this->getToken();
 		return $this->hash->checkHash($token, $actualToken);
+	}
+
+	public function ensureHasToken(): void{
+		if(!$this->hasToken())
+			$this->generateNewToken();
 	}
 }

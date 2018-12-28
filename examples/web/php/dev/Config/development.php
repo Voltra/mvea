@@ -4,6 +4,7 @@ return [
 	"settings" => [
 		"displayErrorDetails" => true
 	],
+	"views" => [],
 	"random" => [
 		"length" => 128,
 		"alphabet" => null

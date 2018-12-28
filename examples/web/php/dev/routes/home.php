@@ -8,5 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 $app->get("/", function(ServerRequestInterface $rq, ResponseInterface $res){
 	/**@var Container $this*/
 
-	return $res->getBody()->write("Hello World!");
+	return $this->view->render($res, "home.twig", [
+		"variable" => "world"
+	]);
 })->setName("home");

@@ -10,6 +10,7 @@ class Config extends HassankhanConfig{
 			"settings" => [
 				"displayErrorDetails" => false
 			],
+			"views" => [],
 			"csrf" => [
 				"key" => "csrf_token"
 			],
