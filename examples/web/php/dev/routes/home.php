@@ -8,7 +8,10 @@ use Psr\Http\Message\ResponseInterface;
 $app->get("/", function(ServerRequestInterface $rq, ResponseInterface $res){
 	/**@var Container $this*/
 
-	print_r($this); die(); //TODO: Debug this
+	/*echo "<pre>";
+	print_r($this);//TODO: Debug this
+	echo "</pre>";
+	die();*/
 
 	return $this->view->render($res, "home.twig", [
 		"variable" => "world"

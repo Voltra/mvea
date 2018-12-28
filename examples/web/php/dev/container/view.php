@@ -14,4 +14,5 @@ return function(Container $c){
 	$uri = Uri::createFromEnvironment(new Environment($_SERVER));
 
 	$view->addExtension(new BaseTwigTools($router, $uri));
+	return $view;
 };
