@@ -2,6 +2,7 @@
 .vscode/
 .brackets.json
 route_autoload.php
+schema.sql
 
 
 
