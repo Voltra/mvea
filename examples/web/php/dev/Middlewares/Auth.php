@@ -16,7 +16,7 @@ class Auth extends Middleware{
 		$this->auth = $auth ?? new AuthAction($container);
 	}
 
-	public function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next) {
+	public function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface {
 		[$response, $user] = $this->auth->loginfromRemember($rq, $res)->asArray();
 		return $next($rq, $response);
 	}

@@ -1,7 +1,6 @@
 <?php
 namespace App\Actions;
 
-
 use App\Helpers\UserResponsePair;
 use App\Models\User;
 use App\Models\UserRemember;
@@ -107,7 +106,7 @@ class Auth extends Action{
 	 */
 	public function login(ResponseInterface $res, string $username, string $password, bool $remember = false): UserResponsePair{
 		$this->syncContainerAndSession();
-		$user = User::where("username", $username)->first();
+		$user = User::fromUsername($username);
 		if($user && $this->hasher()->checkPassword($password, $user->password)) {
 			$ret = $this->logout($res);
 			$this->container[$this->containerKey] = $user;
@@ -148,7 +147,7 @@ class Auth extends Action{
 	 */
 	public function forceLogin(ResponseInterface $res, string $username): UserResponsePair{
 		$this->syncContainerAndSession();
-		$user = User::where("username", $username)->first();
+		$user = User::fromUsername($username);
 
 		if($user){
 			$ret = $this->logout($res);
@@ -180,10 +179,8 @@ class Auth extends Action{
 	 */
 	public function register(ResponseInterface $res, string $username, string $password): UserResponsePair{
 		$this->syncContainerAndSession();
-		User::create([
-			"username" => $username,
-			"password" => $this->hasher()->hashPassword($password)
-		]);
+		$user = User::make($username, $this->hasher()->hashPassword($password));
+		$user->save();
 		return $this->login($res, $username, $password);
 	}
 
@@ -198,7 +195,7 @@ class Auth extends Action{
 		$this->syncContainerAndSession();
 		$hasCookie = $this->cookies->has($rq, $this->cookieName);
 		if($this->isLoggedIn() || !$hasCookie)
-			return $this->user();
+			return new UserResponsePair($res, $this->user());
 
 		/**@var string $cookie*/
 		$cookie = $this->cookies->get($rq, $this->cookieName)->getValue();
@@ -211,7 +208,7 @@ class Auth extends Action{
 		$id = $credentials[0];
 		$token = $credentials[1];
 		$hashedToken = $this->hasher()->hash($token);
-		$rem = UserRemember::where("remember_id", $id)->first();
+		$rem = UserRemember::fromRID($id);
 
 		if(is_null($rem) || !$this->hasher()->checkHash($hashedToken, $rem->token()))
 			return $emptyRes;

@@ -10,11 +10,11 @@ abstract class Middleware {
 	/**@var Container $container*/
 	protected $container;
 
-	public function __invoke(ServerRequestInterface $rq, ResponseInterface $res, callable $next){
+	public function __invoke(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface{
 		return $this->process($rq, $res, $next);
 	}
 
-	public abstract function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next);
+	public abstract function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface;
 
 	public static function from(...$args){
 		return new static(...$args);

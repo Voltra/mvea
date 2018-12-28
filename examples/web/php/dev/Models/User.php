@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model{
@@ -46,4 +47,16 @@ class User extends Model{
 	public function resetRemember(): bool{
 		return $this->remember->reset();
 	}
+
+	public function scopeFromUsername(/*Builder*/ $query, string $username): ?self{
+		return $query->where("username", $username)->first();
+	}
+
+	public static function make(string $username, string $password): self{
+		return self::create([
+			"username" => $username,
+			"password" => $password
+		]);
+	}
+
 }

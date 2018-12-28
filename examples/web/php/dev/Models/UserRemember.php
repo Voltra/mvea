@@ -37,4 +37,8 @@ class UserRemember extends Model{
 	public function reset(): bool{
 		return $this->updateCredentials(null, null);
 	}
+
+	public function scopeFromRID(/*Builder*/ $query, string $rid): ?self{
+		return $query->where("remember_id", $rid)->first();
+	}
 }
