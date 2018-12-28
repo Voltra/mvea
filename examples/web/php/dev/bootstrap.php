@@ -15,6 +15,7 @@ $app = new SlimApp([
 ]);
 $container = $app->getContainer();
 
+session_start();
 $container["session"] = require_once(Path::dev("/container/session.php"));
 $container["view"] = require_once(Path::dev("/container/view.php"));
 

@@ -2,6 +2,7 @@
 return [
 	"debug" => true,
 	"settings" => [
+		"name" => "mvea",
 		"displayErrorDetails" => true
 	],
 	"views" => [],

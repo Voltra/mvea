@@ -21,7 +21,7 @@ class Csrf extends Middleware {
 	public function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface{
 		$this->csrf->ensureHasToken();
 
-		if(!in_array($rq->getMethod(), static::METHODS)){
+		if(in_array($rq->getMethod(), static::METHODS)){
 			$key = $this->csrf->formKey();
 			$params = $rq->getParsedBody();
 			$submittedToken = isset($params[$key])
