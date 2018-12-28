@@ -10,6 +10,27 @@ class Config extends HassankhanConfig{
 			"settings" => [
 				"displayErrorDetails" => false
 			],
+			"random" => [
+				"length" => 60,
+				"alphabet" => null
+			],
+			"session" => [
+				"name" => "session",
+				"autorefresh" => true,
+				"lifetime" => "20 minutes"
+			],
+			"hash" => [
+				"algo" => PASSWORD_BCRYPT,
+				"cost" => PASSWORD_BCRYPT_DEFAULT_COST,
+				"alt_algo" => "sha256"
+			],
+			"auth" => [
+				"container" => "user",
+				"session" => "auth",
+				"remember_name" => "remember",
+				"remember_exp" => "+2 week",
+				"cookie_separator" => "<@>"
+			],
 			"db" => [
 				"driver" => "mysql",
 				"host" => "localhost",

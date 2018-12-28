@@ -12,6 +12,11 @@ $app = new SlimApp([
 	"settings" => $config["settings"]
 ]);
 
+$app->add(new \Slim\Middleware\Session($config["session"]));
+$app->getContainer()["session"] = function($c){
+	return new \SlimSession\Helper();
+};
+
 require_once "route_autoload.php";
 
 return $app;
