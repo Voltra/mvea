@@ -6,9 +6,9 @@ class AdminFilter extends Filter{
 		return $this->auth->isAdmin();
 	}
 
-	protected function redirectURL(): string {
+	/*protected function redirectURL(): string {
 		return $this->auth->isLoggedIn()
 		? parent::redirectURL()
-		: $this->router->urlFor("login");
-	}
+		: $this->router->pathFor("login");
+	}*/
 }

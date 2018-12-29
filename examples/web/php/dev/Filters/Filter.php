@@ -11,7 +11,7 @@ use Slim\Router;
 
 abstract class Filter {
 	/**@var Container $container*/
-//	protected $container;
+	protected $container;
 
 	/**@var Router $router*/
 	protected $router;
@@ -20,23 +20,24 @@ abstract class Filter {
 	protected $auth;
 
 	public function __construct(ContainerInterface $c) {
-//		$this->container = $c;
+		$this->container = $c;
 		$this->router = $c->get("router");
 		$this->auth = $c->get(Auth::class);
 	}
 
-	public static function from(ContainerInterface $c){
-		return new static($c);
+	public static function from(...$args){
+		return new static(...$args);
 	}
 
-	protected abstract function isAuthorized(/*Container $c*/): bool;
+	protected abstract function isAuthorized(): bool;
 
 	protected function redirectURL(): string{
-		return $this->router->urlFor("home");
+		return $this->router->pathFor("home");
 	}
 
 	protected function redirectStatus(): int{
-		return StatusCode::HTTP_FORBIDDEN;
+//		return StatusCode::HTTP_FORBIDDEN;
+		return StatusCode::HTTP_TEMPORARY_REDIRECT;
 	}
 
 	public function __invoke(Request $rq, Response $res, callable $next): Response{
@@ -44,5 +45,9 @@ abstract class Filter {
 			return $res->withRedirect($this->redirectURL(), $this->redirectStatus());
 
 		return $next($rq, $res);
+	}
+
+	public function composeWith(Filter $rhs): ComposedFilter{
+		return ComposedFilter::from($this->container, $this, $rhs);
 	}
 }

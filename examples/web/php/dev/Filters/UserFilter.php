@@ -10,6 +10,6 @@ class UserFilter extends Filter{
 	}
 
 	protected function redirectURL(): string {
-		return $this->router->urlFor("login");
+		return $this->router->pathFor("login");
 	}
 }
