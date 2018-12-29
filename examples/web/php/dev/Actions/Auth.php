@@ -5,9 +5,9 @@ use App\Helpers\UserResponsePair;
 use App\Models\User;
 use App\Models\UserRemember;
 use Carbon\Carbon;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Container;
+use Slim\Http\Response;
 use SlimSession\Helper as Session;
 
 class Auth extends Action{
@@ -36,17 +36,12 @@ class Auth extends Action{
 		$this->containerKey = $config["container"];
 		$this->session = $this->container["session"];
 
-		$this->hash = Hash::from($container);
+		/*$this->hash = Hash::from($container);
 		$this->cookies = Cookies::from($container);
-		$this->random = Random::from($container);
-	}
-
-	/**
-	 * Getter for the hash action
-	 * @return Hash
-	 */
-	public function hasher(): Hash{
-		return $this->hash;
+		$this->random = Random::from($container);*/
+		$this->hash = $container->get(Hash::class);
+		$this->cookies = $container->get(Cookies::class);
+		$this->random = $container->get(Random::class);
 	}
 
 	/**
@@ -81,6 +76,13 @@ class Auth extends Action{
 		return null;
 	}
 
+	public function isAdmin(): bool{
+		if(!$this->isLoggedIn())
+			return false;
+
+		return $this->user()->isAdmin();
+	}
+
 	/**
 	 * Determines whether or not the user is logged as the on with the given username
 	 * @param string $username
@@ -98,16 +100,16 @@ class Auth extends Action{
 
 	/**
 	 * Attempts to log in with the given credentials
-	 * @param ResponseInterface $res
+	 * @param Response $res
 	 * @param string $username
 	 * @param string $password
 	 * @param bool $remember
 	 * @return UserResponsePair
 	 */
-	public function login(ResponseInterface $res, string $username, string $password, bool $remember = false): UserResponsePair{
+	public function login(Response $res, string $username, string $password, bool $remember = false): UserResponsePair{
 		$this->syncContainerAndSession();
 		$user = User::fromUsername($username);
-		if($user && $this->hasher()->checkPassword($password, $user->password)) {
+		if($user && $this->hash->checkPassword($password, $user->password)) {
 			$ret = $this->logout($res);
 			$this->container[$this->containerKey] = $user;
 
@@ -120,7 +122,7 @@ class Auth extends Action{
 		return new UserResponsePair($res, null);
 	}
 
-	public function remember(ResponseInterface $res): ResponseInterface{
+	public function remember(Response $res): Response{
 		$this->syncContainerAndSession();
 		$user = $this->user();
 
@@ -129,7 +131,7 @@ class Auth extends Action{
 
 		$id = $this->random->generateString();
 		$token = $this->random->generateString();
-		$user->updateRemember($id, $this->hasher()->hash($token));
+		$user->updateRemember($id, $this->hash->hash($token));
 
 		$cookie = $this->cookies->builder($this->cookieName)
 		->withValue("{$id}{$this->separator}{$token}")
@@ -141,11 +143,11 @@ class Auth extends Action{
 
 	/**
 	 * Forces login with the given username
-	 * @param ResponseInterface $res
+	 * @param Response $res
 	 * @param string $username
 	 * @return UserResponsePair
 	 */
-	public function forceLogin(ResponseInterface $res, string $username): UserResponsePair{
+	public function forceLogin(Response $res, string $username): UserResponsePair{
 		$this->syncContainerAndSession();
 		$user = User::fromUsername($username);
 
@@ -160,10 +162,10 @@ class Auth extends Action{
 
 	/**
 	 * Logs out the current user
-	 * @param ResponseInterface $res
-	 * @return ResponseInterface
+	 * @param Response $res
+	 * @return Response
 	 */
-	public function logout(ResponseInterface $res): ResponseInterface{
+	public function logout(Response $res): Response{
 		$res = $this->cookies->remove($res, $this->cookieName);
 		$this->session->delete($this->sessionKey);
 		$this->container->offsetUnset($this->containerKey);
@@ -172,26 +174,27 @@ class Auth extends Action{
 
 	/**
 	 * Register a new user
-	 * @param ResponseInterface $res
+	 * @param Response $res
 	 * @param string $username
 	 * @param string $password
+	 * @param bool $remember
 	 * @return UserResponsePair
 	 */
-	public function register(ResponseInterface $res, string $username, string $password): UserResponsePair{
+	public function register(Response $res, string $username, string $password, bool $remember = false): UserResponsePair{
 		$this->syncContainerAndSession();
-		$user = User::make($username, $this->hasher()->hashPassword($password));
-		$user->save();
-		return $this->login($res, $username, $password);
+		$user = User::make($username, $this->hash->hashPassword($password));
+//		$user->save();
+		return $this->login($res, $username, $password, $remember);
 	}
 
 	/**
 	 * Attempt to login from remember credentials in a cookie
 	 * @param ServerRequestInterface $rq
-	 * @param ResponseInterface $res
+	 * @param Response $res
 	 * @return UserResponsePair
 	 * @throws \Interop\Container\Exception\ContainerException
 	 */
-	public function loginfromRemember(ServerRequestInterface $rq, ResponseInterface $res): UserResponsePair{
+	public function loginfromRemember(ServerRequestInterface $rq, Response $res): UserResponsePair{
 		$this->syncContainerAndSession();
 		$hasCookie = $this->cookies->has($rq, $this->cookieName);
 		if($this->isLoggedIn() || !$hasCookie)
@@ -207,10 +210,10 @@ class Auth extends Action{
 
 		$id = $credentials[0];
 		$token = $credentials[1];
-		$hashedToken = $this->hasher()->hash($token);
+		$hashedToken = $this->hash->hash($token);
 		$rem = UserRemember::fromRID($id);
 
-		if(is_null($rem) || !$this->hasher()->checkHash($hashedToken, $rem->token()))
+		if(is_null($rem) || !$this->hash->checkHash($hashedToken, $rem->token()))
 			return $emptyRes;
 
 		$user = $rem->user;

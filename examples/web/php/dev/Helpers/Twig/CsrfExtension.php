@@ -3,7 +3,6 @@ namespace App\Helpers\Twig;
 
 
 use Slim\Container;
-use Slim\Views\TwigExtension;
 
 class CsrfExtension extends \Twig_Extension{
 	/**@var Container $container*/
@@ -24,11 +23,11 @@ class CsrfExtension extends \Twig_Extension{
 	}
 
 	protected function key(): string{
-		return $this->view["csrf_key"];
+		return $this->container->view["csrf_key"];
 	}
 
 	protected function token(): string{
-		return $this->view["csrf_token"];
+		return $this->container->view["csrf_token"];
 	}
 
 	public function csrfInput(): string{

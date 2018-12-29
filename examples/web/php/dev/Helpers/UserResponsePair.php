@@ -3,17 +3,17 @@ namespace App\Helpers;
 
 
 use App\Models\User;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Response;
 
 class UserResponsePair {
 	/**
-	 * @var ResponseInterface $response
+	 * @var Response $response
 	 * @var User|null $user
 	 */
 	public $user, $response;
 
-	public function __construct(ResponseInterface $res, ?User $user = null) {
-		$this->res = $res;
+	public function __construct(Response $res, ?User $user = null) {
+		$this->response = $res;
 		$this->user = $user;
 	}
 

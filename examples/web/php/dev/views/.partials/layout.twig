@@ -6,11 +6,16 @@
 		<meta name="tags" content="{% block tags %}{% endblock %}"/>
 		<title>{% block title %}{% endblock %}</title>
 
+		{% include module("globalCSS") %}
 		{% block css %}{% endblock %}
+
+		{% include module("globalJS") %}
 		{% block js %}{% endblock %}
 	</head>
 	<body>
 		{% include module("flash") %}
-		{% block body %}{% endblock %}
+		<div id="app">
+			{% block body %}{% endblock %}
+		</div>
 	</body>
 </html>

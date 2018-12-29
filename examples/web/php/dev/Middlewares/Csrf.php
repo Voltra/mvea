@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Container;
 use App\Actions\Csrf as CsrfAction;
+use Slim\Http\Response;
 
 class Csrf extends Middleware {
 	/**@var CsrfAction $csrf*/
@@ -15,10 +16,11 @@ class Csrf extends Middleware {
 
 	public function __construct(Container $container) {
 		parent::__construct($container);
-		$this->csrf = new CsrfAction($container);
+//		$this->csrf = new CsrfAction($container);
+		$this->csrf = $container->get(CsrfAction::class);
 	}
 
-	public function process(ServerRequestInterface $rq, ResponseInterface $res, callable $next): ResponseInterface{
+	public function process(ServerRequestInterface $rq, Response $res, callable $next): ResponseInterface{
 		$this->csrf->ensureHasToken();
 		$key = $this->csrf->formKey();
 
@@ -32,11 +34,8 @@ class Csrf extends Middleware {
 				throw new CsrfTokenMismatch();
 		}
 
-		//TODO: put data in the view
-		$data = [
-			"csrf_key" => $key,
-			"csrf_token" => $this->csrf->getToken()
-		];
+		$this->container->view["csrf_key"] = $key;
+		$this->container->view["csrf_token"] = $this->csrf->getToken();
 
 		return $next($rq, $res);
 	}

@@ -16,6 +16,9 @@ $app = new SlimApp([
 $container = $app->getContainer();
 
 session_start();
+foreach(require_once(Path::dev("/container/actions.php")) as $class => $factory)
+	$container[$class] = $factory;
+
 $container["session"] = require_once(Path::dev("/container/session.php"));
 $container["flash"] = require_once(Path::dev("/container/flash.php"));
 $container["view"] = require_once(Path::dev("/container/view.php"));
