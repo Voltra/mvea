@@ -41,7 +41,7 @@ abstract class Filter {
 
 	public function __invoke(Request $rq, Response $res, callable $next): Response{
 		if(!$this->isAuthorized(/*$this->container*/))
-			return $res->withRedirect($this->redirectURL());
+			return $res->withRedirect($this->redirectURL(), $this->redirectStatus());
 
 		return $next($rq, $res);
 	}
