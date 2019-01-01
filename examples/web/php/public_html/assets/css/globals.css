@@ -2,3 +2,14 @@
 	font-family: "Fira Code Retina", roboto, sans-serif;
 	font-variant-ligatures: contextual;
 }
+
+body{
+	width: 100vw;
+	height: 100vh;
+}
+
+button{
+	background-color: transparent;
+	border: none;
+	outline: none;
+}

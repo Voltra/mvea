@@ -4,6 +4,22 @@
 
 {% block body %}
 	Hello {{ variable }}!
+
+	<table class="striped centered responsive-table">
+		<thead>
+			<tr>
+				<th>Username</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.username }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	{# Wall of registered users (except admins) #}
 	{# register button #}
 	{# login/logout buttons #}

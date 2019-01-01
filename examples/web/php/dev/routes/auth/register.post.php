@@ -30,7 +30,7 @@ $app->post("/register", function(ServerRequestInterface $rq, Response $res): Res
 	/**@var \App\Actions\Flash $flash*/
 	$flash = $this->get(\App\Actions\Flash::class);
 	if($password !== $confirm){
-		$flash->error("Passwords don't match");
+		$flash->failure("Passwords don't match");
 		return $goBack($res, StatusCode::HTTP_CONFLICT);
 	}
 
@@ -40,7 +40,7 @@ $app->post("/register", function(ServerRequestInterface $rq, Response $res): Res
 	$response = $auth->register($username, $password, $remember)->response;
 
 	if(!$auth->isLoggedIn()){
-		$flash->error("Failed to register, username might be taken");
+		$flash->failure("Failed to register, username might be taken");
 		return $goBack($response, StatusCode::HTTP_CONFLICT);
 	}
 

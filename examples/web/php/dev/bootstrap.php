@@ -19,11 +19,11 @@ session_start();
 foreach(require_once(Path::dev("/container/actions.php")) as $class => $factory)
 	$container[$class] = $factory;
 
-$container["session"] = require_once(Path::dev("/container/session.php"));
-$container["flash"] = require_once(Path::dev("/container/flash.php"));
-$container["view"] = require_once(Path::dev("/container/view.php"));
+foreach(["session", "flash", "view"] as $item)
+	$container[$item] = require_once(Path::dev("/container/{$item}.php"));
 
-$app->add(new \Slim\Middleware\Session($config["session"]))
+$app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware($app))
+	->add(new \Slim\Middleware\Session($config["session"]))
 	->add(App\Middlewares\Csrf::from($container))
 	->add(App\Middlewares\Auth::from($container));
 

@@ -30,7 +30,7 @@ $app->post("/login", function(ServerRequestInterface $rq, Response $res): Respon
 	/**@var \App\Actions\Flash $flash*/
 	$flash = $this->get(\App\Actions\Flash::class);
 	if($password !== $confirm){
-		$flash->error("Passwords don't match");
+		$flash->failure("Passwords don't match");
 		return $goBack($res, StatusCode::HTTP_CONFLICT);
 	}
 
@@ -41,7 +41,7 @@ $app->post("/login", function(ServerRequestInterface $rq, Response $res): Respon
 	$response = $auth->login($res, $username, $password, $remember)->response;
 
 	if(!$auth->isLoggedIn()) {
-		$flash->error("Invalid credentials");
+		$flash->failure("Invalid credentials");
 		return $goBack($response, StatusCode::HTTP_CONFLICT);
 	}
 

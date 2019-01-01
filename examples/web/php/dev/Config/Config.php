@@ -9,6 +9,7 @@ class Config extends HassankhanConfig{
 			"debug" => false,
 			"settings" => [
 				"name" => "",
+				"debug" => false,
 				"displayErrorDetails" => false
 			],
 			"views" => [],

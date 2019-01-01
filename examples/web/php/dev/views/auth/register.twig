@@ -4,4 +4,40 @@
 	{# Register form #}
 	{# keys: username, password, pconfirm, remember #}
 	Register
+
+	<div class="row">
+		<form class="col s12 relative" action="{{ path_for("register.post") }}" method="POST">
+			<div class="row">
+				<div class="input-field col s6">
+					<input type="text" required {% for _ in ["id", "name"] %}{{ _ }}="username"{% endfor %}/>
+					<label for="username">Username</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input type="password" required {% for _ in ["id", "name"] %}{{ _ }}="password"{% endfor %}/>
+					<label for="password">Password</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input type="password" required {% for _ in ["id", "name"] %}{{ _ }}="pconfirm"{% endfor %}/>
+					<label for="pconfirm">Confirm your password</label>
+				</div>
+			</div>
+			<div class="row right-align">
+					<div class="input-field col s6">
+						<input type="checkbox" {% for _ in ["id", "name"] %}{{ _ }}="remember"{% endfor %} class="filled-in"/>
+						<span>Remember me?</span>
+					</div>
+			</div>
+			<div class="row center-align">
+				<button type="submit" {% for _ in ["id", "name"] %}{{ _ }}="submit"{% endfor %} class="btn waves-effect waves-light">Submit
+					<i class="material-icons right">send</i>
+				</button>
+			</div>
+
+			{{ csrf_input() }}
+		</form>
+	</div>
 {% endblock %}

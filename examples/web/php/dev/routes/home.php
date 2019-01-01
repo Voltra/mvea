@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\User;
 use Slim\App as SlimApp;
 use Slim\Container;
 use Psr\Http\Message\ServerRequestInterface;
@@ -9,6 +11,7 @@ $app->get("/", function(ServerRequestInterface $rq, ResponseInterface $res){
 	/**@var Container $this*/
 
 	return $this->view->render($res, "home.twig", [
-		"variable" => "world"
+		"variable" => "world",
+		"users" => User::all()->filter(function($user){ return !$user->isAdmin(); })
 	]);
 })->setName("home");
