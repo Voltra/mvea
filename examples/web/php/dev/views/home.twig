@@ -1,25 +1,32 @@
 {% extends layout() %}
 
-{% block title %} Hello world! {% endblock %}
+{% block title %} Hello {{ variable }}! {% endblock %}
 
 {% block body %}
-	Hello {{ variable }}!
-
-	<table class="striped centered responsive-table">
-		<thead>
-			<tr>
-				<th>Username</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			{% for user in users %}
+	{% if self %}
+		<div class="row">
+			<h1>Hi, {{ self.username }}!</h1>
+		</div>
+	{% endif %}
+	<div class="row">
+		<div class="col s6 offset-s3">
+			<table class="striped centered responsive-table">
+				<thead>
 				<tr>
-					<td>{{ user.username }}</td>
+					<th>Username</th>
 				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+				</thead>
+
+				<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user.username }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 	{# Wall of registered users (except admins) #}
 	{# register button #}
 	{# login/logout buttons #}

@@ -1,7 +1,48 @@
 {% extends layout() %}
 
+{% block title %}Login{% endblock %}
+
 {% block body %}
 	{# Login form #}
 	{# keys: username, password, pconfirm, remember #}
-	Login
+
+	<div class="row">
+		<form class="col s12" action="{{ path_for("login.post") }}" method="POST">
+			<div class="row center-align">
+				<h1>Login</h1>
+			</div>
+			<div class="row">
+				<div class="input-field col s6 offset-s3">
+					<input type="text" required {% for _ in ["id", "name"] %}{{ _ }}="username"{% endfor %}/>
+					<label for="username">Username</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6 offset-s3">
+					<input type="password" required {% for _ in ["id", "name"] %}{{ _ }}="password"{% endfor %}/>
+					<label for="password">Password</label>
+				</div>
+			</div>
+			<div class="row right-align">
+				<div class="input-field col s6 offset-s3">
+					<p>
+						<label>
+							<input type="checkbox" {% for _ in ["id", "name"] %}{{ _ }}="remember"{% endfor %} class="filled-in"/>
+							<span>Remember me?</span>
+						</label>
+					</p>
+				</div>
+			</div>
+			<div class="row center-align">
+				<div class="col s2 offset-s5">
+					<button type="submit" {% for _ in ["id", "name"] %}{{ _ }}="submit"{% endfor %} class="btn waves-effect waves-light">
+					Submit
+					<i class="material-icons right">send</i>
+					</button>
+				</div>
+			</div>
+
+			{{ csrf_input() }}
+		</form>
+	</div>
 {% endblock %}

@@ -40,22 +40,39 @@ class User extends Model{
 		return !is_null($this->admin);
 	}
 
+	public function hasRemember(): bool{
+		return !is_null($this->remember);
+	}
+
+	public function createRemember(?string $id, ?string $token): bool{
+		$ret = false;
+		if(!$this->hasRemember()) {
+			$ret = !!UserRemember::make($this, $id, $token);
+			$this->refresh();
+		}
+		return $ret;
+	}
+
 	public function updateRemember(?string $id, ?string $token): bool{
+		if(!$this->hasRemember())
+			return $this->createRemember($id, $token);
 		return $this->remember->updateCredentials($id, $token);
 	}
 
 	public function resetRemember(): bool{
-		return $this->remember->reset();
+		if($this->hasRemember())
+			return $this->remember->reset();
+		return true;
 	}
 
-	public function scopeFromUsername(/*Builder*/ $query, string $username): ?self{
-		return $query->where("username", $username)->first();
+	public static function fromUsername(string $username): ?self{
+		return self::where("username", $username)->first();
 	}
 
-	public static function make(string $username, string $password): self{
+	public static function make(string $username, string $passwordHash): self{
 		return self::create([
 			"username" => $username,
-			"password" => $password
+			"password" => $passwordHash
 		]);
 	}
 

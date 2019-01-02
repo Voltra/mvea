@@ -42,6 +42,9 @@ class Auth extends Action{
 		$this->hash = $container->get(Hash::class);
 		$this->cookies = $container->get(Cookies::class);
 		$this->random = $container->get(Random::class);
+
+		if(!$this->user())
+			$this->container[$this->containerKey] = null;
 	}
 
 	/**
@@ -58,10 +61,12 @@ class Auth extends Action{
 	/**
 	 * Determines whether or not a user is logged in
 	 * @return bool
+	 * @throws \Interop\Container\Exception\ContainerException
 	 */
 	public function isLoggedIn(): bool{
 		$this->syncContainerAndSession();
-		return $this->container->has($this->containerKey);
+		return $this->container->has($this->containerKey)
+		&& !is_null($this->container->get($this->containerKey));
 	}
 
 	/**
@@ -183,7 +188,7 @@ class Auth extends Action{
 	public function register(Response $res, string $username, string $password, bool $remember = false): UserResponsePair{
 		$this->syncContainerAndSession();
 		$user = User::make($username, $this->hash->hashPassword($password));
-//		$user->save();
+		$user->save();
 		return $this->login($res, $username, $password, $remember);
 	}
 

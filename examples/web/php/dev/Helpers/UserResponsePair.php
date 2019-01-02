@@ -7,8 +7,8 @@ use Slim\Http\Response;
 
 class UserResponsePair {
 	/**
-	 * @var Response $response
-	 * @var User|null $user
+	 * @property-read Response $response
+	 * @property-read User|null $user
 	 */
 	public $user, $response;
 

@@ -9,7 +9,7 @@ use Slim\Http\StatusCode;
 
 
 /**@var SlimApp $app*/
-$app->post("/logout", function(ServerRequestInterface $rq, Response $res): Response{
+$app->get("/logout", function(ServerRequestInterface $rq, Response $res): Response{
 	/**@var \Slim\Container $this*/
 	/**@var \App\Actions\Flash $flash*/
 	$flash = $this->get(\App\Actions\Flash::class);

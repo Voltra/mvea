@@ -12,6 +12,7 @@ $app->get("/", function(ServerRequestInterface $rq, ResponseInterface $res){
 
 	return $this->view->render($res, "home.twig", [
 		"variable" => "world",
-		"users" => User::all()->filter(function($user){ return !$user->isAdmin(); })
+		"users" => User::all()->filter(function($user){ return !$user->isAdmin(); }),
+		"self" => $this->get("user")
 	]);
 })->setName("home");
