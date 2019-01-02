@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 
 class User extends Model{
 //	protected $table = "users";
@@ -65,10 +66,22 @@ class User extends Model{
 		return true;
 	}
 
+	/**
+	 * Find a user from its username
+	 * @param string $username
+	 * @return User|null
+	 */
 	public static function fromUsername(string $username): ?self{
 		return self::where("username", $username)->first();
 	}
 
+	/**
+	 * Create a new user
+	 * @param string $username
+	 * @param string $passwordHash
+	 * @return User
+	 * @throws QueryException
+	 */
 	public static function make(string $username, string $passwordHash): self{
 		return self::create([
 			"username" => $username,

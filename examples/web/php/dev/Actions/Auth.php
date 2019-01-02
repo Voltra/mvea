@@ -5,6 +5,7 @@ use App\Helpers\UserResponsePair;
 use App\Models\User;
 use App\Models\UserRemember;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Container;
 use Slim\Http\Response;
@@ -187,8 +188,11 @@ class Auth extends Action{
 	 */
 	public function register(Response $res, string $username, string $password, bool $remember = false): UserResponsePair{
 		$this->syncContainerAndSession();
-		$user = User::make($username, $this->hash->hashPassword($password));
-		$user->save();
+		try {
+			$user = User::make($username, $this->hash->hashPassword($password));
+		}catch (QueryException $e){
+			return new UserResponsePair($res, null);
+		}
 		return $this->login($res, $username, $password, $remember);
 	}
 
