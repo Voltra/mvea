@@ -10,11 +10,11 @@
 	{# Register form #}
 	{# keys: username, password, pconfirm, remember #}
 
-	<div class="row">
+	<div class="row center-align">
+		<h1>Register</h1>
+	</div>
+	<div class="row valign-wrapper">
 		<form class="col s12" action="{{ path_for("register.post") }}" method="POST">
-			<div class="row center-align">
-				<h1>Register</h1>
-			</div>
 			<div class="row">
 				<div class="input-field col s6 offset-s3">
 					<input type="text" required {% for _ in ["id", "name"] %}{{ _ }}="username"{% endfor %}/>

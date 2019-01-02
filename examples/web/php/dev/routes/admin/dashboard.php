@@ -10,6 +10,11 @@ use Slim\App as SlimApp;
 /**@var SlimApp $app*/
 $app->get("/admin", function(ServerRequestInterface $rq, ResponseInterface $res): ResponseInterface{
 	/**@var \Slim\Container $this*/
-	return $this->view->render($res, "admin/dashboard.twig", []);
+	return $this->view->render($res, "admin/dashboard.twig", [
+		"user" => $this->get("user")
+	]);
 })->setName("admin.dashboard")
-->add(UserFilter::from($app->getContainer())->composeWith(AdminFilter::from($app->getContainer())));
+->add(
+	UserFilter::from($app->getContainer())
+	->composeWith(AdminFilter::from($app->getContainer()))
+);

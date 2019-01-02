@@ -1,0 +1,27 @@
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large blue darken-1">
+		<i class="large material-icons">menu</i>
+	</a>
+	<ul>
+		{% if user %}
+			{% if user.isAdmin() %}
+				<li>
+					<a href="{{ path_for("admin.dashboard") }}" class="btn-floating deep-purple darken-2">
+						<i class="material-icons">supervised_user_circle</i>
+					</a>
+				</li>
+			{% endif %}
+			<li>
+				<a href="{{ path_for("logout") }}" class="btn-floating red">
+					<i class="material-icons">power_settings_new</i>
+				</a>
+			</li>
+		{% else %}
+			<li>
+				<a href="{{ path_for("login") }}" class="btn-floating green">
+					<i class="material-icons">lock_open</i>
+				</a>
+			</li>
+		{% endif %}
+	</ul>
+</div>

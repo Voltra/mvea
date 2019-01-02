@@ -172,7 +172,8 @@ class Auth extends Action{
 	 * @return Response
 	 */
 	public function logout(Response $res): Response{
-		$res = $this->cookies->remove($res, $this->cookieName);
+		$res = $this->cookies->expire($res, $this->cookieName);
+//		$res = $this->cookies->remove($res, $this->cookieName);
 		$this->session->delete($this->sessionKey);
 		$this->container->offsetUnset($this->containerKey);
 		return $res;
