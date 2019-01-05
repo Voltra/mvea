@@ -6,4 +6,65 @@
 	{# Complete wall of registered users w/ management options #}
 	{# logout buttons #}
 	{# home button #}
+	<div class="row">
+		<h1>Sexy Dashboard</h1>
+	</div>
+	{% if users|length %}
+		<div class="row">
+			<div class="col s6 offset-s3">
+				<table class="striped centered responsive-table">
+					<thead>
+					<tr>
+						<th>id</th>
+						<th>Username</th>
+						<th>Password Hash</th>
+						<th>Actions</th>
+					</tr>
+					</thead>
+
+					<tbody>
+					{% for _ in users %}
+						<tr>
+							<td>{{ _.id }}</td>
+							<td>{{ _.username }}</td>
+							<td>{{ _.password }}</td>
+							<td>
+								<a class="dropdown-trigger btn" href="#" data-target="dd">
+									<i class="material-icons">keyboard_arrow_down</i>
+								</a>
+
+								<ul id="dd" class="dropdown-content">
+									<li>
+										<a href="{{ path_for("admin.deleteUser", {"uid": _.id}) }}">
+											<i class="material-icons">delete</i>
+											Delete
+										</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	{% else %}
+		Nothing to show here :x
+	{% endif %}
+
+	{% include module("floating_menu") with {
+		"fmenu": {
+			"admins": [
+				{
+					"path": path_for("home"),
+					"classes": "teal lighten-2",
+					"icon": "home"
+				},{
+					"path": path_for("logout"),
+					"classes": "red",
+					"icon": "power_settings_new"
+				}
+			]
+		}
+	} %}
 {% endblock %}

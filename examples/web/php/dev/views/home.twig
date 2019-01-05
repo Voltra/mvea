@@ -1,33 +1,40 @@
 {% extends layout() %}
 
-{% block title %} Hello {{ variable }}! {% endblock %}
+{% block title %} Home {% if user %}of {{ user.username }}{% endif %} {% endblock %}
 
 {% block body %}
 	{% if user %}
 		<div class="row">
 			<h1>Hi, {{ user.username }}!</h1>
 		</div>
-	{% endif %}
-	<div class="row">
-		<div class="col s6 offset-s3">
-			<table class="striped centered responsive-table">
-				<thead>
-					<tr>
-						<th>Username</th>
-					</tr>
-				</thead>
+		{% if users|length %}
+			<div class="row">
+				<div class="col s6 offset-s3">
+					<table class="striped centered responsive-table">
+						<thead>
+						<tr>
+							<th>Username</th>
+						</tr>
+						</thead>
 
-				<tbody>
-				{% for _ in users %}
-					<tr>
-						<td>{{ _.username }}</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
+						<tbody>
+						{% for _ in users %}
+							<tr>
+								<td>{{ _.username }}</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% else %}
+			Nothing to show here :x
+		{% endif %}
+	{% else %}
+		<div class="row">
+			Hi visitor!
 		</div>
-	</div>
-
+	{% endif %}
 
 	{% include module("floating_menu") with {
 		"fmenu": {
