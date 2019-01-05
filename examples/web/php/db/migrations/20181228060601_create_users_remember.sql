@@ -6,7 +6,7 @@ CREATE TABLE user_remember(
   remember_token varchar(255),
   created_at timestamp DEFAULT current_timestamp,
   updated_at timestamp,
-  FOREIGN KEY(user_id) REFERENCES users(id)
+  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- migrate:down

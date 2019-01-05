@@ -29,7 +29,36 @@
 	</div>
 
 
-	{% include module("floating_menu") %}
+	{% include module("floating_menu") with {
+		"fmenu": {
+			"admins": [
+				{
+					"path": path_for("admin.dashboard"),
+					"classes": "deep-purple darken-2",
+					"icon": "supervised_user_circle"
+				},
+			],
+			"users": [
+				{
+					"path": path_for("logout"),
+					"classes": "red",
+					"icon": "power_settings_new"
+				},
+			],
+			"visitors": [
+				{
+					"path": path_for("register"),
+					"classes": "blue lighten-2",
+					"icon": "person_add"
+				},
+				{
+					"path": path_for("login"),
+					"classes": "green",
+					"icon": "lock_open"
+				},
+			]
+		}
+	} %}
 	{# Wall of registered users (except admins) #}
 	{# register button #}
 	{# login/logout buttons #}

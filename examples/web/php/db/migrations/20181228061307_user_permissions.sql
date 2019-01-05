@@ -19,8 +19,8 @@ CREATE TABLE role_permissions(
 	permission_id int NOT NULL,
 	created_at timestamp DEFAULT current_timestamp,
 	updated_at timestamp,
-	FOREIGN KEY(role_id) REFERENCES roles(id),
-	FOREIGN KEY(permission_id) REFERENCES permissions(id)
+	FOREIGN KEY(role_id) REFERENCES roles(id) ON DELETE CASCADE,
+	FOREIGN KEY(permission_id) REFERENCES permissions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_roles(
@@ -29,8 +29,8 @@ CREATE TABLE user_roles(
 	role_id int NOT NULL,
 	created_at timestamp DEFAULT current_timestamp,
 	updated_at timestamp,
-	FOREIGN KEY(user_id) REFERENCES users(id),
-	FOREIGN KEY(role_id) REFERENCES roles(id)
+	FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY(role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
 CREATE TABLE admins(
@@ -38,7 +38,7 @@ CREATE TABLE admins(
     user_id int NOT NULL,
     created_at timestamp DEFAULT current_timestamp,
     updated_at timestamp,
-    FOREIGN KEY(user_id) REFERENCES users(id)
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- migrate:down

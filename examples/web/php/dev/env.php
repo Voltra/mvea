@@ -1,3 +1,6 @@
 <?php
-$dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
+use App\Path;
+use Dotenv\Dotenv;
+
+$dotenv = new Dotenv(Path::root());
 $dotenv->load();
