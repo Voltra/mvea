@@ -1,0 +1,13 @@
+/*#app{
+	width: 90%;
+	height: 90%;
+	margin: 5% 5%;
+}
+
+#app > .row{
+	margin: auto;
+}*/
+
+
+@media all and (min-width: 768px){}
+@media all and (max-width: 768px){}
