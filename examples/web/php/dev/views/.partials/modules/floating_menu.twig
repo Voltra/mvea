@@ -1,0 +1,33 @@
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large blue darken-1">
+		<i class="large material-icons">menu</i>
+	</a>
+	<ul>
+		{% if user %}
+			{% if user.isAdmin() %}
+				{% for btn in fmenu.admins %}
+					<li>
+						<a href="{{ btn.path }}" class="btn-floating {{ btn.classes }}">
+							<i class="material-icons">{{ btn.icon }}</i>
+						</a>
+					</li>
+				{% endfor %}
+			{% endif %}
+			{% for btn in fmenu.users %}
+				<li>
+					<a href="{{ btn.path }}" class="btn-floating {{ btn.classes }}">
+						<i class="material-icons">{{ btn.icon }}</i>
+					</a>
+				</li>
+			{% endfor %}
+		{% else %}
+			{% for btn in fmenu.visitors %}
+				<li>
+					<a href="{{ btn.path }}" class="btn-floating {{ btn.classes }}">
+						<i class="material-icons">{{ btn.icon }}</i>
+					</a>
+				</li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+</div>
